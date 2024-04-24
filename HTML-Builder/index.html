@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download HTML as PDF</title>
+  </head>
+  <body>
+    <button id="downloadPDF">Download PDF</button>
+
+    <script>
+      document
+        .getElementById("downloadPDF")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch("http://localhost:3000/download-pdf");
+            const blob = await response.blob();
+            console.log('received blob', blob);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "sample.pdf";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          } catch (error) {
+            console.error("Error downloading PDF:", error);
+          }
+        });
+    </script>
+  </body>
+</html>
